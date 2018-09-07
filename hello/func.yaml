@@ -1,0 +1,6 @@
+---
+name: chanwit/devops_hello
+path: /hello/v2
+version: 0.0.2
+entrypoint: /app/func
+

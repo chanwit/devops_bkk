@@ -1,0 +1,5 @@
+name: chanwit/helloworld-cob
+version: 2.0.0
+entrypoint: /app/helloworld-exe
+path: /hello/v2
+
