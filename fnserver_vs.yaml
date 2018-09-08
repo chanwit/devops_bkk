@@ -1,0 +1,40 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: fnserver-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - '*'
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: fnserver-route
+spec:
+  hosts:
+  - '*'
+  gateways:
+  - fnserver-gateway
+  - mesh
+  http:
+  - match:
+    - uri:
+        prefix: /hello
+    rewrite:
+      uri: /r/devops/hello
+    route:
+    - destination:
+        host: fnserver.swarm.svc.cluster.local
+        port:
+            number: 8080
+    append_headers:
+        X-Function-Weighted: v1=5,v2=5

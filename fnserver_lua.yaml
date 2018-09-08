@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: fnserver-lua
+spec:
+  # workloadLabels:
+  #  istio: ingressgateway
+  filters:
+  - listenerMatch:
+  #    portNumber: 80
+      listenerType: ANY
+    filterName: devops_bkk.lua
+    filterType: HTTP
+    filterConfig:
+      inlineCode: |
+        function envoy_on_response(response_handle)
+          body_size = response_handle:body():length()
+          response_handle:headers():add("response-body-size", tostring(body_size))
+          response_handle:headers():add("tainted-by", "chanwit")
+        end
+
