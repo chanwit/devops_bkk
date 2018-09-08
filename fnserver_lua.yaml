@@ -1,16 +1,21 @@
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: fnserver-lua
+  namespace: istio-system
 spec:
-  # workloadLabels:
-  #  istio: ingressgateway
+  workloadLabels:
+    app: istio-ingressgateway
   filters:
-  - listenerMatch:
-  #    portNumber: 80
-      listenerType: ANY
-    filterName: devops_bkk.lua
+  - insertPosition:
+      index: FIRST
+    listenerMatch:
+      portNumber: 80
+      listenerType: GATEWAY
+      listenerProtocol: HTTP
     filterType: HTTP
+    filterName: "envoy.lua"
     filterConfig:
       inlineCode: |
         function envoy_on_response(response_handle)
