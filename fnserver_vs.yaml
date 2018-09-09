@@ -36,5 +36,5 @@ spec:
         host: fnserver.swarm.svc.cluster.local
         port:
             number: 8080
-    append_headers:
+    appendHeaders:
         X-Function-Weighted: v1=5,v2=5
