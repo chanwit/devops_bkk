@@ -30,11 +30,24 @@ spec:
     - uri:
         prefix: /hello
     rewrite:
-      uri: /r/devops/helloworld-cob
+      uri: /r/devops/helloworld-cob/v2
+    route:
+    - destination:
+        host: fnserver.swarm.svc.cluster.local
+        port:
+            number: 8080
+  - match:
+    - headers:
+        cookies:
+          regex: "^(.*?;)?(email=[^;]*@some-company-name.com)(;.*)?$"
+    - uri:
+        prefix: /hello
+    rewrite:
+      uri: /r/devops/hello-go
     route:
     - destination:
         host: fnserver.swarm.svc.cluster.local
         port:
             number: 8080
     appendHeaders:
-        X-Function-Weighted: v1=5,v2=5
+        X-Function-Weighted: v1=50,v2=50
